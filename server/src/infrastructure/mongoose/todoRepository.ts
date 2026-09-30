@@ -54,7 +54,7 @@ export class MongooseTodoRepository implements TodoRepository {
         done: todo.done,
         updatedAt: todo.updatedAt,
       },
-      { new: true }
+      { returnDocument: "after" }
     ).lean<TodoDoc | null>();
 
     if (!doc) throw new Error("todo missing after update");
