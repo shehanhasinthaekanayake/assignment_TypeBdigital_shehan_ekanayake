@@ -20,26 +20,24 @@ export function CompletedSection({
   if (items.length === 0) return null;
 
   return (
-    <section>
+    <section className={open ? "list-panel" : "list-panel list-panel--collapsed"}>
       <CompletedToggle
         count={items.length}
         open={open}
         onToggle={onToggleOpen}
       />
-      <div className={open ? "accordion" : "accordion accordion--closed"}>
-        <div className="accordion-inner">
-          <ul className="task-list">
-            {items.map((todo) => (
-              <TaskRow
-                key={todo.id}
-                todo={todo}
-                onToggle={onToggle}
-                onDelete={onDelete}
-              />
-            ))}
-          </ul>
-        </div>
-      </div>
+      {open ? (
+        <ul className="task-list">
+          {items.map((todo) => (
+            <TaskRow
+              key={todo.id}
+              todo={todo}
+              onToggle={onToggle}
+              onDelete={onDelete}
+            />
+          ))}
+        </ul>
+      ) : null}
     </section>
   );
 }

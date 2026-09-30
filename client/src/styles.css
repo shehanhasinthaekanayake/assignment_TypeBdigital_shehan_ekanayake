@@ -29,8 +29,10 @@
 }
 
 html,
-body {
+body,
+#root {
   width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -42,7 +44,7 @@ body {
   color: var(--on-surface);
   background: var(--surface);
   overscroll-behavior: none;
-  min-height: 100dvh;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -65,23 +67,53 @@ input {
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   background: var(--surface);
 }
 
 .app-main {
   flex: 1;
+  min-height: 0;
   width: 100%;
-  padding: 4.5rem var(--gutter) 2rem;
+  padding: 4.5rem var(--gutter) 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .app-content {
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow: hidden;
+}
+
+.lists {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.list-panel {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: hidden;
+}
+
+.list-panel--collapsed {
+  flex: 0 0 auto;
 }
 
 /* top bar */
@@ -319,8 +351,9 @@ input {
 
 /* sections */
 .section-label {
-  margin: 0 0 0.5rem;
+  margin: 0;
   padding: 0 0.25rem;
+  flex-shrink: 0;
   font-size: 10px;
   line-height: 12px;
   font-weight: 700;
@@ -332,10 +365,14 @@ input {
 .task-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* task row */
@@ -507,6 +544,7 @@ input {
   color: var(--on-surface-variant);
   cursor: pointer;
   text-align: left;
+  flex-shrink: 0;
 }
 
 .completed-toggle:hover {

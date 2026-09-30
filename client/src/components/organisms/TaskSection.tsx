@@ -12,7 +12,7 @@ export function TaskSection({ items, newIds, onToggle, onDelete }: Props) {
   if (items.length === 0) return null;
 
   return (
-    <section>
+    <section className="list-panel">
       <p className="section-label">To Do</p>
       <ul className="task-list">
         {items.map((todo) => (

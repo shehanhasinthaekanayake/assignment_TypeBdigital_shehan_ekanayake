@@ -48,20 +48,22 @@ export function TodosPage() {
 
       {!initialLoad && active.length === 0 ? <EmptyDoneBanner /> : null}
 
-      <TaskSection
-        items={active}
-        newIds={newIds}
-        onToggle={(id) => dispatch(toggle(id))}
-        onDelete={(id) => dispatch(remove(id))}
-      />
+      <div className="lists">
+        <TaskSection
+          items={active}
+          newIds={newIds}
+          onToggle={(id) => dispatch(toggle(id))}
+          onDelete={(id) => dispatch(remove(id))}
+        />
 
-      <CompletedSection
-        items={completed}
-        open={completedOpen}
-        onToggleOpen={() => setCompletedOpen((o) => !o)}
-        onToggle={(id) => dispatch(toggle(id))}
-        onDelete={(id) => dispatch(remove(id))}
-      />
+        <CompletedSection
+          items={completed}
+          open={completedOpen}
+          onToggleOpen={() => setCompletedOpen((o) => !o)}
+          onToggle={(id) => dispatch(toggle(id))}
+          onDelete={(id) => dispatch(remove(id))}
+        />
+      </div>
     </AppShell>
   );
 }
