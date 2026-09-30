@@ -1,4 +1,4 @@
-import type { Todo } from "../../api/todos";
+import type { Todo } from "../../types/todo";
 import { TaskRow } from "../molecules/TaskRow";
 
 type Props = {

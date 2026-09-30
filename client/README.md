@@ -6,17 +6,18 @@ npm run dev
 ```
 
 App: http://localhost:5173  
-API proxy → http://localhost:3000
+API proxy → http://localhost:3000 (server)
 
 ```
 src/
-  api/                 http helper + todos client
+  types/               shared client types
   store/               redux + redux-saga
     todos/             actions, reducer, saga
   components/
-    atoms/             smallest controls (empty for now)
-    molecules/         TodoRow
-    organisms/         TodoList
-    templates/         AppShell
-  pages/               TodosPage
+    atoms/
+    molecules/
+    organisms/
+    templates/
+  pages/
+  validations/
 ```

@@ -1,4 +1,4 @@
-import type { Todo } from "../../api/todos";
+import type { Todo } from "../../types/todo";
 import { CompletedToggle } from "../molecules/CompletedToggle";
 import { TaskRow } from "../molecules/TaskRow";
 

@@ -1,4 +1,4 @@
-import type { Todo } from "../../api/todos";
+import type { Todo } from "../../types/todo";
 
 export const LIST = "todos/list";
 export const LIST_OK = "todos/listOk";

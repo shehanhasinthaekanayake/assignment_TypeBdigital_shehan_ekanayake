@@ -1,5 +1,5 @@
 import type { UnknownAction } from "redux";
-import type { Todo } from "../../api/todos";
+import type { Todo } from "../../types/todo";
 import * as TodoActions from "./actions";
 
 export type TodosState = {
