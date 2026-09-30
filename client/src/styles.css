@@ -629,14 +629,28 @@ input {
 }
 
 .text-field:disabled {
-  opacity: 0.6;
+  opacity: 0.45;
   cursor: not-allowed;
+  color: var(--on-surface-variant);
 }
 
 .icon-btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.icon-btn--primary:disabled {
+  background: var(--outline);
+  color: var(--on-surface-variant);
+  box-shadow: none;
+}
+
+.add-form-hint {
+  margin: 0.35rem 0 0 0.25rem;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--error);
 }
 
 .check-btn:disabled {
