@@ -25,7 +25,9 @@ i am going to use AI to generate test cases for these following conditions.
 3. blank title
  in the domain layer
 
- going to add small api documentation. 
+ going to add small api documentation. used ai for this.
+
+ 
 
 
 

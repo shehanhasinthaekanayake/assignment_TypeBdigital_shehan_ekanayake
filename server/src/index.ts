@@ -1,8 +1,10 @@
 import "dotenv/config";
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 import { connect } from "./infrastructure/mongoose/connect";
 import { MongooseTodoRepository } from "./infrastructure/mongoose/todoRepository";
 import { todoRoutes } from "./presentation/routes/todos";
+import { swaggerSpec } from "./swagger";
 
 async function main() {
   const uri = process.env.MONGODB_URI;
@@ -10,6 +12,8 @@ async function main() {
 
   const app = express();
   app.use(express.json());
+
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // wire the mongo repo into the routes
   const repo = new MongooseTodoRepository();
