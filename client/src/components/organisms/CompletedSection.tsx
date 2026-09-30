@@ -7,6 +7,7 @@ type Props = {
   items: Todo[];
   open: boolean;
   newIds?: Set<string>;
+  pendingId?: string | null;
   onToggleOpen: () => void;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
@@ -16,6 +17,7 @@ export function CompletedSection({
   items,
   open,
   newIds,
+  pendingId,
   onToggleOpen,
   onToggle,
   onDelete,
@@ -50,6 +52,7 @@ export function CompletedSection({
               key={todo.id}
               todo={todo}
               isNew={newIds?.has(todo.id)}
+              busy={pendingId === todo.id}
               onToggle={onToggle}
               onDelete={onDelete}
             />

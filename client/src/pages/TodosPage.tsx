@@ -20,7 +20,9 @@ function byUpdated(a: Todo, b: Todo) {
 
 export function TodosPage() {
   const dispatch = useDispatch();
-  const { items, loading, error } = useSelector((s: RootState) => s.todos);
+  const { items, listing, creating, pendingId, error } = useSelector(
+    (s: RootState) => s.todos
+  );
   const [completedOpen, setCompletedOpen] = useState(true);
   const [newActiveIds, setNewActiveIds] = useState<Set<string>>(() => new Set());
   const [newDoneIds, setNewDoneIds] = useState<Set<string>>(() => new Set());
@@ -36,7 +38,7 @@ export function TodosPage() {
     () => items.filter((t) => t.done).sort(byUpdated),
     [items]
   );
-  const initialLoad = loading && items.length === 0;
+  const initialLoad = listing && items.length === 0;
 
   useEffect(() => {
     dispatch(list());
@@ -81,11 +83,13 @@ export function TodosPage() {
     <AppShell>
       <DayHeader remaining={active.length} />
       <AddTaskForm
+        busy={creating}
         onAdd={(title, description) => dispatch(create(title, description))}
       />
 
       {error ? <p className="status-line status-line--error">{error}</p> : null}
       {initialLoad ? <p className="status-line">loading…</p> : null}
+      {creating ? <p className="status-line">adding…</p> : null}
 
       {!initialLoad && active.length === 0 ? <EmptyDoneBanner /> : null}
 
@@ -93,6 +97,7 @@ export function TodosPage() {
         <TaskSection
           items={active}
           newIds={newActiveIds}
+          pendingId={pendingId}
           onToggle={(id) => dispatch(toggle(id))}
           onDelete={(id) => dispatch(remove(id))}
         />
@@ -101,6 +106,7 @@ export function TodosPage() {
           items={completed}
           open={completedOpen}
           newIds={newDoneIds}
+          pendingId={pendingId}
           onToggleOpen={() => setCompletedOpen((o) => !o)}
           onToggle={(id) => dispatch(toggle(id))}
           onDelete={(id) => dispatch(remove(id))}

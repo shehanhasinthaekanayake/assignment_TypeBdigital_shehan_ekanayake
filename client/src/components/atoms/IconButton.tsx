@@ -7,6 +7,7 @@ type Props = {
   type?: "button" | "submit";
   variant?: "primary" | "ghost" | "danger";
   className?: string;
+  disabled?: boolean;
 };
 
 export function IconButton({
@@ -16,6 +17,7 @@ export function IconButton({
   type = "button",
   variant = "ghost",
   className = "",
+  disabled = false,
 }: Props) {
   return (
     <button
@@ -23,6 +25,7 @@ export function IconButton({
       className={`icon-btn icon-btn--${variant} ${className}`.trim()}
       aria-label={label}
       onClick={onClick}
+      disabled={disabled}
     >
       <Icon name={icon} size={variant === "primary" ? 20 : 18} />
     </button>

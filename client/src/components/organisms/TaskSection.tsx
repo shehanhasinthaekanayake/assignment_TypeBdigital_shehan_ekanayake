@@ -5,11 +5,18 @@ import { TaskRow } from "../molecules/TaskRow";
 type Props = {
   items: Todo[];
   newIds?: Set<string>;
+  pendingId?: string | null;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
-export function TaskSection({ items, newIds, onToggle, onDelete }: Props) {
+export function TaskSection({
+  items,
+  newIds,
+  pendingId,
+  onToggle,
+  onDelete,
+}: Props) {
   const listRef = useRef<HTMLUListElement>(null);
   const prevFirst = useRef<string | null>(null);
 
@@ -34,6 +41,7 @@ export function TaskSection({ items, newIds, onToggle, onDelete }: Props) {
             key={todo.id}
             todo={todo}
             isNew={newIds?.has(todo.id)}
+            busy={pendingId === todo.id}
             onToggle={onToggle}
             onDelete={onDelete}
           />

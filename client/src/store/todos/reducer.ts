@@ -4,18 +4,26 @@ import * as TodoActions from "./actions";
 
 export type TodosState = {
   items: Todo[];
-  loading: boolean;
+  listing: boolean;
+  creating: boolean;
+  pendingId: string | null;
   error: string | null;
 };
 
 const initial: TodosState = {
   items: [],
-  loading: false,
+  listing: false,
+  creating: false,
+  pendingId: null,
   error: null,
 };
 
 function replace(items: Todo[], todo: Todo) {
   return items.map((t) => (t.id === todo.id ? todo : t));
+}
+
+function clearBusy(state: TodosState): TodosState {
+  return { ...state, listing: false, creating: false, pendingId: null };
 }
 
 export function todosReducer(
@@ -24,39 +32,50 @@ export function todosReducer(
 ): TodosState {
   switch (action.type) {
     case TodoActions.LIST:
+      return { ...state, listing: true, error: null };
+
     case TodoActions.CREATE:
+      return { ...state, creating: true, error: null };
+
     case TodoActions.UPDATE:
     case TodoActions.TOGGLE:
     case TodoActions.DELETE:
-      return { ...state, loading: true, error: null };
+      return {
+        ...state,
+        pendingId: action.id as string,
+        error: null,
+      };
 
     case TodoActions.LIST_OK:
-      return { ...state, loading: false, items: action.items as Todo[] };
+      return {
+        ...clearBusy(state),
+        items: action.items as Todo[],
+      };
 
     case TodoActions.CREATE_OK:
       return {
-        ...state,
-        loading: false,
+        ...clearBusy(state),
         items: [action.todo as Todo, ...state.items],
       };
 
     case TodoActions.UPDATE_OK:
       return {
-        ...state,
-        loading: false,
+        ...clearBusy(state),
         items: replace(state.items, action.todo as Todo),
       };
 
     case TodoActions.TOGGLE_OK: {
       const todo = action.todo as Todo;
       const rest = state.items.filter((t) => t.id !== todo.id);
-      return { ...state, loading: false, items: [todo, ...rest] };
+      return {
+        ...clearBusy(state),
+        items: [todo, ...rest],
+      };
     }
 
     case TodoActions.DELETE_OK:
       return {
-        ...state,
-        loading: false,
+        ...clearBusy(state),
         items: state.items.filter((t) => t.id !== (action.id as string)),
       };
 
@@ -65,7 +84,10 @@ export function todosReducer(
     case TodoActions.UPDATE_FAIL:
     case TodoActions.TOGGLE_FAIL:
     case TodoActions.DELETE_FAIL:
-      return { ...state, loading: false, error: action.error as string };
+      return {
+        ...clearBusy(state),
+        error: action.error as string,
+      };
 
     default:
       return state;

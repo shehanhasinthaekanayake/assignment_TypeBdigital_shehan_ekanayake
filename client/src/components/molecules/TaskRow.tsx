@@ -5,11 +5,18 @@ import { IconButton } from "../atoms/IconButton";
 type Props = {
   todo: Todo;
   isNew?: boolean;
+  busy?: boolean;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
-export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
+export function TaskRow({
+  todo,
+  isNew = false,
+  busy = false,
+  onToggle,
+  onDelete,
+}: Props) {
   const done = todo.done;
 
   return (
@@ -18,6 +25,7 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
         "task-row",
         done ? "task-row--done" : "",
         isNew ? "task-row--new" : "",
+        busy ? "task-row--busy" : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -27,13 +35,17 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
           done={done}
           label={done ? "Mark active" : "Mark task done"}
           onClick={() => onToggle(todo.id)}
+          disabled={busy}
         />
         <div
           className="task-text"
-          onClick={() => onToggle(todo.id)}
+          onClick={() => {
+            if (!busy) onToggle(todo.id);
+          }}
           role="button"
-          tabIndex={0}
+          tabIndex={busy ? -1 : 0}
           onKeyDown={(e) => {
+            if (busy) return;
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               onToggle(todo.id);
@@ -45,9 +57,7 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
           </span>
           {todo.description ? (
             <span
-              className={
-                done ? "task-desc task-desc--done" : "task-desc"
-              }
+              className={done ? "task-desc task-desc--done" : "task-desc"}
             >
               {todo.description}
             </span>
@@ -60,6 +70,7 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
         variant="danger"
         className="icon-btn--ghost"
         onClick={() => onDelete(todo.id)}
+        disabled={busy}
       />
     </li>
   );

@@ -5,14 +5,16 @@ import { TextField } from "../atoms/TextField";
 
 type Props = {
   onAdd: (title: string, description: string) => void;
+  busy?: boolean;
 };
 
-export function AddTaskForm({ onAdd }: Props) {
+export function AddTaskForm({ onAdd, busy = false }: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   function submit(e: FormEvent) {
     e.preventDefault();
+    if (busy) return;
     const t = parseTodoTitle(title);
     if (!t) return;
     onAdd(t, description.trim());
@@ -21,20 +23,22 @@ export function AddTaskForm({ onAdd }: Props) {
   }
 
   return (
-    <form className="add-form" onSubmit={submit}>
+    <form className={busy ? "add-form add-form--busy" : "add-form"} onSubmit={submit}>
       <div className="add-form-wrap">
         <div className="add-form-fields">
           <TextField
             id="task-input"
             value={title}
-            placeholder="Write a new task..."
+            placeholder={busy ? "Adding…" : "Write a new task..."}
             onChange={setTitle}
+            disabled={busy}
           />
           <TextField
             id="task-desc"
             value={description}
             placeholder="Description (optional)"
             onChange={setDescription}
+            disabled={busy}
           />
         </div>
         <IconButton
@@ -42,6 +46,7 @@ export function AddTaskForm({ onAdd }: Props) {
           icon="add"
           label="Add Task"
           variant="primary"
+          disabled={busy}
         />
       </div>
     </form>
