@@ -27,6 +27,9 @@ i am going to use AI to generate test cases for these following conditions.
 
  going to add small api documentation. used ai for this.
 
+ we are going to now create the front end
+ very simple react + TS atimic architecture based redux saga atchitecture
+
  
 
 
