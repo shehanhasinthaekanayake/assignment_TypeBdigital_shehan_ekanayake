@@ -1,0 +1,15 @@
+# Server
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Docs: http://localhost:3000/docs
+
+- `GET /api/todos`
+- `POST /api/todos` `{ "title": "...", "description": "..." }`
+- `PUT /api/todos/:id` title / description
+- `PATCH /api/todos/:id/done`
+- `DELETE /api/todos/:id`
