@@ -5,11 +5,10 @@ export function TopBar() {
     <header className="top-bar">
       <div className="top-bar-inner">
         <div className="top-bar-brand">
-          <div className="brand-mark" aria-hidden />
+          <div className="brand-mark" aria-hidden>
+            <Icon name="check_box" size={18} filled />
+          </div>
           <h1>Tasks</h1>
-        </div>
-        <div className="avatar" aria-hidden>
-          <Icon name="person" size={18} />
         </div>
       </div>
     </header>

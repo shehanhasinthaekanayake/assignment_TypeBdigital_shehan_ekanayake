@@ -119,6 +119,10 @@ input {
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--primary-container), var(--primary));
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-primary);
 }
 
 .top-bar h1 {
@@ -127,19 +131,6 @@ input {
   line-height: 26px;
   font-weight: 600;
   letter-spacing: -0.015em;
-}
-
-.avatar {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
-  background: var(--primary);
-  color: var(--on-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: default;
 }
 
 /* day header */
@@ -151,18 +142,8 @@ input {
   padding-top: 0.25rem;
 }
 
-.day-header .date-label {
-  margin: 0;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--on-surface-variant);
-}
-
 .day-header h2 {
-  margin: 0.125rem 0 0;
+  margin: 0;
   font-size: 24px;
   line-height: 30px;
   font-weight: 600;
