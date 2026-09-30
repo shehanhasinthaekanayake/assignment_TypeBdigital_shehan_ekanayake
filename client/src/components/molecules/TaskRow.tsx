@@ -28,8 +28,8 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
           label={done ? "Mark active" : "Mark task done"}
           onClick={() => onToggle(todo.id)}
         />
-        <span
-          className={done ? "task-label task-label--done" : "task-label"}
+        <div
+          className="task-text"
           onClick={() => onToggle(todo.id)}
           role="button"
           tabIndex={0}
@@ -40,8 +40,19 @@ export function TaskRow({ todo, isNew = false, onToggle, onDelete }: Props) {
             }
           }}
         >
-          {todo.title}
-        </span>
+          <span className={done ? "task-label task-label--done" : "task-label"}>
+            {todo.title}
+          </span>
+          {todo.description ? (
+            <span
+              className={
+                done ? "task-desc task-desc--done" : "task-desc"
+              }
+            >
+              {todo.description}
+            </span>
+          ) : null}
+        </div>
       </div>
       <IconButton
         icon="delete"

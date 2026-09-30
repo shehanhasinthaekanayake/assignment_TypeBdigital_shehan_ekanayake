@@ -39,7 +39,9 @@ export function TodosPage() {
   return (
     <AppShell>
       <DayHeader remaining={active.length} />
-      <AddTaskForm onAdd={(title) => dispatch(create(title))} />
+      <AddTaskForm
+        onAdd={(title, description) => dispatch(create(title, description))}
+      />
 
       {error ? <p className="status-line status-line--error">{error}</p> : null}
       {initialLoad ? <p className="status-line">loading…</p> : null}

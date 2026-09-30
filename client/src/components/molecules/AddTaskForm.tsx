@@ -4,29 +4,39 @@ import { IconButton } from "../atoms/IconButton";
 import { TextField } from "../atoms/TextField";
 
 type Props = {
-  onAdd: (title: string) => void;
+  onAdd: (title: string, description: string) => void;
 };
 
 export function AddTaskForm({ onAdd }: Props) {
-  const [value, setValue] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   function submit(e: FormEvent) {
     e.preventDefault();
-    const title = parseTodoTitle(value);
-    if (!title) return;
-    onAdd(title);
-    setValue("");
+    const t = parseTodoTitle(title);
+    if (!t) return;
+    onAdd(t, description.trim());
+    setTitle("");
+    setDescription("");
   }
 
   return (
     <form className="add-form" onSubmit={submit}>
       <div className="add-form-wrap">
-        <TextField
-          id="task-input"
-          value={value}
-          placeholder="Write a new task..."
-          onChange={setValue}
-        />
+        <div className="add-form-fields">
+          <TextField
+            id="task-input"
+            value={title}
+            placeholder="Write a new task..."
+            onChange={setTitle}
+          />
+          <TextField
+            id="task-desc"
+            value={description}
+            placeholder="Description (optional)"
+            onChange={setDescription}
+          />
+        </div>
         <IconButton
           type="submit"
           icon="add"

@@ -2,12 +2,23 @@ import { Todo } from "../../domain/todo";
 import { TodoRepository } from "../../interfaces/todoRepository";
 import { TodoModel } from "./todoModel";
 
-function toTodo(doc: { _id: string; title: string; description?: string; done: boolean }): Todo {
+type TodoDoc = {
+  _id: string;
+  title: string;
+  description?: string;
+  done: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+function toTodo(doc: TodoDoc): Todo {
   return {
     id: doc._id,
     title: doc.title,
     description: doc.description ?? "",
     done: doc.done,
+    createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
   };
 }
 
@@ -18,17 +29,19 @@ export class MongooseTodoRepository implements TodoRepository {
       title: todo.title,
       description: todo.description,
       done: todo.done,
+      createdAt: todo.createdAt,
+      updatedAt: todo.updatedAt,
     });
-    return toTodo(doc);
+    return toTodo(doc.toObject() as TodoDoc);
   }
 
   async list() {
-    const docs = await TodoModel.find().lean();
+    const docs = await TodoModel.find().lean<TodoDoc[]>();
     return docs.map(toTodo);
   }
 
   async findById(id: string) {
-    const doc = await TodoModel.findById(id).lean();
+    const doc = await TodoModel.findById(id).lean<TodoDoc | null>();
     return doc ? toTodo(doc) : null;
   }
 
@@ -39,9 +52,10 @@ export class MongooseTodoRepository implements TodoRepository {
         title: todo.title,
         description: todo.description,
         done: todo.done,
+        updatedAt: todo.updatedAt,
       },
       { new: true }
-    ).lean();
+    ).lean<TodoDoc | null>();
 
     if (!doc) throw new Error("todo missing after update");
     return toTodo(doc);
