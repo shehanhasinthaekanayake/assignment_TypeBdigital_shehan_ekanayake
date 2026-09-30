@@ -3,10 +3,15 @@ import type { Todo } from "../../types/todo";
 import * as TodoActions from "./actions";
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(path, {
-    headers: { "Content-Type": "application/json", ...init?.headers },
-    ...init,
-  });
+  let res: Response;
+  try {
+    res = await fetch(path, {
+      headers: { "Content-Type": "application/json", ...init?.headers },
+      ...init,
+    });
+  } catch {
+    throw new Error("can't reach server");
+  }
 
   if (!res.ok) {
     let msg = res.statusText;

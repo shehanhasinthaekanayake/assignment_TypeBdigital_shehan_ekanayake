@@ -89,6 +89,9 @@ export function todosReducer(
         error: action.error as string,
       };
 
+    case TodoActions.CLEAR_ERROR:
+      return { ...state, error: null };
+
     default:
       return state;
   }

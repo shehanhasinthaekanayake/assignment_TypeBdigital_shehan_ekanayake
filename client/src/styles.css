@@ -663,6 +663,34 @@ input {
   color: var(--error);
 }
 
+.status-line--row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.status-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.status-action {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: 12px;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.status-action:hover {
+  opacity: 0.8;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

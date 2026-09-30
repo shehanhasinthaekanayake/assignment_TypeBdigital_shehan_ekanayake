@@ -20,6 +20,8 @@ export const DELETE = "todos/delete";
 export const DELETE_OK = "todos/deleteOk";
 export const DELETE_FAIL = "todos/deleteFail";
 
+export const CLEAR_ERROR = "todos/clearError";
+
 export const list = () => ({ type: LIST as typeof LIST });
 export const listOk = (items: Todo[]) => ({
   type: LIST_OK as typeof LIST_OK,
@@ -87,6 +89,10 @@ export const removeFail = (error: string) => ({
   error,
 });
 
+export const clearError = () => ({
+  type: CLEAR_ERROR as typeof CLEAR_ERROR,
+});
+
 export type TodosAction =
   | ReturnType<typeof list>
   | ReturnType<typeof listOk>
@@ -103,7 +109,9 @@ export type TodosAction =
   | ReturnType<typeof toggle>
   | ReturnType<typeof toggleOk>
   | ReturnType<typeof toggleFail>
-  
+
   | ReturnType<typeof remove>
   | ReturnType<typeof removeOk>
-  | ReturnType<typeof removeFail>;
+  | ReturnType<typeof removeFail>
+
+  | ReturnType<typeof clearError>;

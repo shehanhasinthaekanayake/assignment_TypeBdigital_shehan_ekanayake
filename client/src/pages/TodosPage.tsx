@@ -6,7 +6,7 @@ import { EmptyDoneBanner } from "../components/molecules/EmptyDoneBanner";
 import { CompletedSection } from "../components/organisms/CompletedSection";
 import { TaskSection } from "../components/organisms/TaskSection";
 import { AppShell } from "../components/templates/AppShell";
-import { create, list, remove, toggle } from "../store/todos/actions";
+import { create, clearError, list, remove, toggle } from "../store/todos/actions";
 import type { RootState } from "../store/store";
 import type { Todo } from "../types/todo";
 
@@ -39,6 +39,7 @@ export function TodosPage() {
     [items]
   );
   const initialLoad = listing && items.length === 0;
+  const listFailed = Boolean(error) && items.length === 0 && !listing;
 
   useEffect(() => {
     dispatch(list());
@@ -87,11 +88,35 @@ export function TodosPage() {
         onAdd={(title, description) => dispatch(create(title, description))}
       />
 
-      {error ? <p className="status-line status-line--error">{error}</p> : null}
+      {error ? (
+        <div className="status-line status-line--error status-line--row">
+          <span>{error}</span>
+          <span className="status-actions">
+            {listFailed ? (
+              <button
+                type="button"
+                className="status-action"
+                onClick={() => dispatch(list())}
+              >
+                retry
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="status-action"
+              onClick={() => dispatch(clearError())}
+            >
+              dismiss
+            </button>
+          </span>
+        </div>
+      ) : null}
       {initialLoad ? <p className="status-line">loading…</p> : null}
       {creating ? <p className="status-line">adding…</p> : null}
 
-      {!initialLoad && active.length === 0 ? <EmptyDoneBanner /> : null}
+      {!initialLoad && !listFailed && active.length === 0 ? (
+        <EmptyDoneBanner />
+      ) : null}
 
       <div className="lists">
         <TaskSection

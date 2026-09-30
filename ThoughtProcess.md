@@ -32,6 +32,8 @@ i am going to use AI to generate test cases for these following conditions.
 
  for the css styling it very tedios used ai tools to get it right
 
+ i could use zod for validation for this one kept it simple
+
  
 
 
