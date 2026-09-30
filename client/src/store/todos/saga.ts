@@ -12,7 +12,7 @@ function* listWorker() {
   }
 }
 
-function* createWorker(action: ReturnType<typeof A.create>) {
+function* createWorker(action: ReturnType<typeof TodoActions.create>) {
   try {
     const todo: Todo = yield call(
       api.createTodo,
@@ -25,7 +25,7 @@ function* createWorker(action: ReturnType<typeof A.create>) {
   }
 }
 
-function* updateWorker(action: ReturnType<typeof A.update>) {
+function* updateWorker(action: ReturnType<typeof TodoActions.update>) {
   try {
     const todo: Todo = yield call(api.updateTodo, action.id, action.patch);
     yield put(TodoActions.updateOk(todo));
@@ -34,7 +34,7 @@ function* updateWorker(action: ReturnType<typeof A.update>) {
   }
 }
 
-function* toggleWorker(action: ReturnType<typeof A.toggle>) {
+function* toggleWorker(action: ReturnType<typeof TodoActions.toggle>) {
   try {
     const todo: Todo = yield call(api.toggleDone, action.id);
     yield put(TodoActions.toggleOk(todo));
@@ -43,7 +43,7 @@ function* toggleWorker(action: ReturnType<typeof A.toggle>) {
   }
 }
 
-function* deleteWorker(action: ReturnType<typeof A.remove>) {
+function* deleteWorker(action: ReturnType<typeof TodoActions.remove>) {
   try {
     yield call(api.deleteTodo, action.id);
     yield put(TodoActions.removeOk(action.id));

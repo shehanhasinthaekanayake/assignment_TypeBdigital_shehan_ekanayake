@@ -30,6 +30,8 @@ i am going to use AI to generate test cases for these following conditions.
  we are going to now create the front end
  very simple react + TS atimic architecture based redux saga atchitecture
 
+ for the css styling it very tedios used ai tools to get it right
+
  
 
 

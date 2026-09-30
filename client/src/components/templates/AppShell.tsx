@@ -1,17 +1,17 @@
 import type { ReactNode } from "react";
+import { TopBar } from "../organisms/TopBar";
 
 type Props = {
-  title: string;
   children: ReactNode;
 };
 
-export function AppShell({ title, children }: Props) {
+export function AppShell({ children }: Props) {
   return (
-    <div className="shell">
-      <header>
-        <h1>{title}</h1>
-      </header>
-      <main>{children}</main>
+    <div className="app-shell">
+      <TopBar />
+      <main className="app-main">
+        <div className="app-content">{children}</div>
+      </main>
     </div>
   );
 }
