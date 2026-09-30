@@ -41,12 +41,17 @@ export function todosReducer(
       };
 
     case TodoActions.UPDATE_OK:
-    case TodoActions.TOGGLE_OK:
       return {
         ...state,
         loading: false,
         items: replace(state.items, action.todo as Todo),
       };
+
+    case TodoActions.TOGGLE_OK: {
+      const todo = action.todo as Todo;
+      const rest = state.items.filter((t) => t.id !== todo.id);
+      return { ...state, loading: false, items: [todo, ...rest] };
+    }
 
     case TodoActions.DELETE_OK:
       return {

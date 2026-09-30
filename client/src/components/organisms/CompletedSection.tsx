@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { Todo } from "../../types/todo";
 import { CompletedToggle } from "../molecules/CompletedToggle";
 import { TaskRow } from "../molecules/TaskRow";
@@ -5,6 +6,7 @@ import { TaskRow } from "../molecules/TaskRow";
 type Props = {
   items: Todo[];
   open: boolean;
+  newIds?: Set<string>;
   onToggleOpen: () => void;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
@@ -13,10 +15,25 @@ type Props = {
 export function CompletedSection({
   items,
   open,
+  newIds,
   onToggleOpen,
   onToggle,
   onDelete,
 }: Props) {
+  const listRef = useRef<HTMLUListElement>(null);
+  const prevFirst = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const first = items[0]?.id ?? null;
+    if (first && first !== prevFirst.current) {
+      requestAnimationFrame(() => {
+        listRef.current?.scrollTo({ top: 0 });
+      });
+    }
+    prevFirst.current = first;
+  }, [items, open]);
+
   if (items.length === 0) return null;
 
   return (
@@ -27,11 +44,12 @@ export function CompletedSection({
         onToggle={onToggleOpen}
       />
       {open ? (
-        <ul className="task-list">
+        <ul className="task-list" ref={listRef}>
           {items.map((todo) => (
             <TaskRow
               key={todo.id}
               todo={todo}
+              isNew={newIds?.has(todo.id)}
               onToggle={onToggle}
               onDelete={onDelete}
             />

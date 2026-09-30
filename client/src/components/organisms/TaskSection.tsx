@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { Todo } from "../../types/todo";
 import { TaskRow } from "../molecules/TaskRow";
 
@@ -9,12 +10,25 @@ type Props = {
 };
 
 export function TaskSection({ items, newIds, onToggle, onDelete }: Props) {
+  const listRef = useRef<HTMLUListElement>(null);
+  const prevFirst = useRef<string | null>(null);
+
+  useEffect(() => {
+    const first = items[0]?.id ?? null;
+    if (first && first !== prevFirst.current) {
+      requestAnimationFrame(() => {
+        listRef.current?.scrollTo({ top: 0 });
+      });
+    }
+    prevFirst.current = first;
+  }, [items]);
+
   if (items.length === 0) return null;
 
   return (
     <section className="list-panel">
       <p className="section-label">To Do</p>
-      <ul className="task-list">
+      <ul className="task-list" ref={listRef}>
         {items.map((todo) => (
           <TaskRow
             key={todo.id}

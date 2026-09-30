@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddTaskForm } from "../components/molecules/AddTaskForm";
 import { DayHeader } from "../components/molecules/DayHeader";
@@ -8,33 +8,74 @@ import { TaskSection } from "../components/organisms/TaskSection";
 import { AppShell } from "../components/templates/AppShell";
 import { create, list, remove, toggle } from "../store/todos/actions";
 import type { RootState } from "../store/store";
+import type { Todo } from "../types/todo";
+
+function byCreated(a: Todo, b: Todo) {
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+}
+
+function byUpdated(a: Todo, b: Todo) {
+  return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+}
 
 export function TodosPage() {
   const dispatch = useDispatch();
   const { items, loading, error } = useSelector((s: RootState) => s.todos);
   const [completedOpen, setCompletedOpen] = useState(true);
-  const [newIds, setNewIds] = useState<Set<string>>(() => new Set());
-  const prevIds = useRef<Set<string>>(new Set());
+  const [newActiveIds, setNewActiveIds] = useState<Set<string>>(() => new Set());
+  const [newDoneIds, setNewDoneIds] = useState<Set<string>>(() => new Set());
+  const prevActive = useRef<Set<string>>(new Set());
+  const prevDone = useRef<Set<string>>(new Set());
+  const ready = useRef(false);
+
+  const active = useMemo(
+    () => items.filter((t) => !t.done).sort(byCreated),
+    [items]
+  );
+  const completed = useMemo(
+    () => items.filter((t) => t.done).sort(byUpdated),
+    [items]
+  );
+  const initialLoad = loading && items.length === 0;
 
   useEffect(() => {
     dispatch(list());
   }, [dispatch]);
 
   useEffect(() => {
-    const current = new Set(items.map((t) => t.id));
-    const added = [...current].filter((id) => !prevIds.current.has(id));
-    if (added.length > 0 && prevIds.current.size > 0) {
-      setNewIds(new Set(added));
-      const t = window.setTimeout(() => setNewIds(new Set()), 500);
-      prevIds.current = current;
+    const activeIds = new Set(active.map((t) => t.id));
+    const doneIds = new Set(completed.map((t) => t.id));
+
+    if (!ready.current) {
+      prevActive.current = activeIds;
+      prevDone.current = doneIds;
+      if (!initialLoad) ready.current = true;
+      return;
+    }
+
+    const addedActive = [...activeIds].filter((id) => !prevActive.current.has(id));
+    const addedDone = [...doneIds].filter((id) => !prevDone.current.has(id));
+
+    if (addedActive.length > 0) {
+      setNewActiveIds(new Set(addedActive));
+      const t = window.setTimeout(() => setNewActiveIds(new Set()), 500);
+      prevActive.current = activeIds;
+      prevDone.current = doneIds;
       return () => window.clearTimeout(t);
     }
-    prevIds.current = current;
-  }, [items]);
 
-  const active = items.filter((t) => !t.done);
-  const completed = items.filter((t) => t.done);
-  const initialLoad = loading && items.length === 0;
+    if (addedDone.length > 0) {
+      setCompletedOpen(true);
+      setNewDoneIds(new Set(addedDone));
+      const t = window.setTimeout(() => setNewDoneIds(new Set()), 500);
+      prevActive.current = activeIds;
+      prevDone.current = doneIds;
+      return () => window.clearTimeout(t);
+    }
+
+    prevActive.current = activeIds;
+    prevDone.current = doneIds;
+  }, [active, completed, initialLoad]);
 
   return (
     <AppShell>
@@ -51,7 +92,7 @@ export function TodosPage() {
       <div className="lists">
         <TaskSection
           items={active}
-          newIds={newIds}
+          newIds={newActiveIds}
           onToggle={(id) => dispatch(toggle(id))}
           onDelete={(id) => dispatch(remove(id))}
         />
@@ -59,6 +100,7 @@ export function TodosPage() {
         <CompletedSection
           items={completed}
           open={completedOpen}
+          newIds={newDoneIds}
           onToggleOpen={() => setCompletedOpen((o) => !o)}
           onToggle={(id) => dispatch(toggle(id))}
           onDelete={(id) => dispatch(remove(id))}
