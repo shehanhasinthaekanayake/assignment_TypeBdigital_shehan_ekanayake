@@ -7,6 +7,7 @@ i have addded .env.example.  rename that file into .env
 and 'npm run dev' to run in development mode
 
 starting time -> 12:15AM - 09/30/2026
+ending time -> 07:07PM - 09/30/2026
 
  based on the requirement image it seems a mono repo need to be created but not a monalythic architecture
  in the server file i will create an architecture that includes HEXAGONAL architecture with DDD. I will go with TDD. so that i can test the expected unit test cases after the development.
