@@ -36,7 +36,7 @@ export class MongooseTodoRepository implements TodoRepository {
   }
 
   async list() {
-    const docs = await TodoModel.find().lean<TodoDoc[]>();
+    const docs = await TodoModel.find().sort({ createdAt: -1 }).lean<TodoDoc[]>();
     return docs.map(toTodo);
   }
 

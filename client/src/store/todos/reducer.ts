@@ -37,7 +37,7 @@ export function todosReducer(
       return {
         ...state,
         loading: false,
-        items: [...state.items, action.todo as Todo],
+        items: [action.todo as Todo, ...state.items],
       };
 
     case TodoActions.UPDATE_OK:
